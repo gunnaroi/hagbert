@@ -1,0 +1,2 @@
+# Presence of this file puts the repo root on sys.path for pytest, so
+# `import pipelines` works no matter how pytest is invoked.

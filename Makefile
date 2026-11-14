@@ -10,10 +10,10 @@ setup:
 check:
 	$(PY) scripts/validate_registry.py
 	$(PY) scripts/check_name.py
-	uv run pytest -q
+	$(PY) -m pytest -q
 
 test:
-	uv run pytest -q
+	$(PY) -m pytest -q
 
 # make update SOURCE=<series id | module path | provider name>
 update:
