@@ -2,7 +2,7 @@
 phases:
   0-foundations:
     done:
-      - "repo layout (registry/pipelines/data/site/workflows), seed series, CI, nightly harvest, Pages deploy"
+      - "repo layout (registry/pipelines/data/site/workflows), seed series, CI, nightly harvest, deploy (Cloudflare Pages, works from a private repo; GitHub Pages if the repo goes public)"
   1-data-spine:
     - "pin exact Hagstofa PxWeb leaf tables and dimension codes: CPI subindices (Efnahagur/visitolur/1_vnv/2_undirvisitolur), HICP (2_samraemdvnv), national accounts (Efnahagur/thjodhagsreikningar), external trade (utanrikisverslun), labour force survey + registered unemployment + wage index (Atvinnuvegir), retail turnover, building permits/starts, real-estate price index (Ibuar/... or Thjodskra)"
     - "pin Sedlabanki NSDP SDMX keys: key policy rate, official ISK reference exchange rate, government bond yields, inflation-expectations survey; fallbacks are databank.is and the XML feed under cb.is/statistics/xml-data"

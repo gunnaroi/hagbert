@@ -24,12 +24,14 @@ jobs:
         id: run
         run: uv run python -m pipelines.run --fetch auto
       - name: Commit data changes (fetch + ff-only retry)
+        id: commit
         run: |
           git config user.name "hagbert-bot"
           git config user.email "hagbert-bot@users.noreply.github.com"
           git add data
           if git diff --cached --quiet; then
             echo "no data changes"
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
           else
             git commit -q -m "data: nightly harvest $(date -u +%F)"
             git fetch -q origin main
@@ -38,5 +40,10 @@ jobs:
             else
               git rebase -q origin/main && git push -q origin HEAD:main
             fi
-            echo "pushed"
+            echo "pushed=true" >> "$GITHUB_OUTPUT"
           fi
+      - name: Trigger deploy (GITHUB_TOKEN pushes do not fire push events)
+        if: steps.commit.outputs.pushed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --ref main

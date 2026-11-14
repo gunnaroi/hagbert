@@ -1,8 +1,9 @@
 import { defineConfig } from "astro/config";
 
-// Project Pages URL is gunnaroi.github.io/hagbert, so base is the repo name.
-// Change site/base together if a custom domain is connected (see site.config.yaml).
+// Deployed to Cloudflare Pages at hagbert.pages.dev, served from the root, so
+// base is "/". If you switch to a custom domain or GitHub Pages, change site
+// and base here together with site.config.yaml -> site.url.
 export default defineConfig({
-  site: "https://gunnaroi.github.io/hagbert",
-  base: "/hagbert",
+  site: "https://hagbert.pages.dev",
+  base: "/",
 });

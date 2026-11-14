@@ -1,63 +1,71 @@
 name: deploy
-# Builds the site and deploys to GitHub Pages.
-# One-time maintainer setting: Settings -> Pages -> Build and deployment -> Source = "GitHub Actions".
-# Until that setting is on, the build still runs (so the site compiles in CI) but the
-# Pages steps skip quietly and this workflow stays green instead of failing.
+# Builds the site and uploads it to Cloudflare Pages (direct upload). Unlike GitHub
+# Pages on free plans, this works from a PRIVATE repo: the site is public
+# (hagbert.pages.dev) even though the source stays private - fine, because all data
+# files are CC BY 4.0 public data with per-series licences in the registry.
+# Skips quietly (stays green) until the CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID
+# repository secrets exist (Settings -> Secrets and variables -> Actions). The Pages
+# project name comes from the CF_PAGES_PROJECT repo variable, default "hagbert".
+# If the repo ever goes public, GitHub Pages (Settings -> Pages -> GitHub Actions)
+# is an alternative; this workflow stays the default.
 on:
   push:
     branches: [main]
   workflow_dispatch:
+concurrency:
+  group: deploy
+  cancel-in-progress: false
 permissions:
   contents: read
-  pages: write
-  id-token: write
-concurrency:
-  group: pages
-  cancel-in-progress: false
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    outputs:
-      pages_enabled: ${{ steps.pages.outputs.enabled }}
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      PAGES_PROJECT: ${{ vars.CF_PAGES_PROJECT || 'hagbert' }}
     steps:
+      - name: Cloudflare secrets set?
+        id: gate
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::notice::CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID secrets not set - skipping deploy. Add them under Settings -> Secrets and variables -> Actions to publish to https://$PAGES_PROJECT.pages.dev"
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/checkout@v4
+        if: steps.gate.outputs.ok == 'true'
+        with:
+          ref: main   # always deploy latest main, including fresh bot commits
       - uses: astral-sh/setup-uv@v5
-      - run: uv sync
-      - run: uv run python -m pipelines.build.site_data
+        if: steps.gate.outputs.ok == 'true'
       - uses: actions/setup-node@v4
+        if: steps.gate.outputs.ok == 'true'
         with:
           node-version: 24
           cache: npm
           cache-dependency-path: site/package.json
-      - run: npm install
-        working-directory: site
-      - run: npx astro build
-        working-directory: site
-      - id: pages
-        name: Pages enabled on this repo?
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build site data (python, repo root)
+        if: steps.gate.outputs.ok == 'true'
         run: |
-          if gh api "/repos/$GITHUB_REPOSITORY/pages" >/dev/null 2>&1; then
-            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          uv sync
+          uv run python -m pipelines.build.site_data
+      - name: Install + build the Astro site
+        if: steps.gate.outputs.ok == 'true'
+        working-directory: site
+        run: |
+          npm install
+          npx astro build
+      - name: Create the Pages project if it doesn't exist
+        if: steps.gate.outputs.ok == 'true'
+        run: |
+          if npx --yes wrangler@4 pages project list | grep -q "│ $PAGES_PROJECT "; then
+            echo "Pages project $PAGES_PROJECT exists"
           else
-            echo "enabled=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::GitHub Pages is not enabled on this repo yet - skipping deploy. Set Settings -> Pages -> Source = GitHub Actions to go live."
+            npx --yes wrangler@4 pages project create "$PAGES_PROJECT" --production-branch=main
           fi
-      - uses: actions/configure-pages@v5
-        if: steps.pages.outputs.enabled == 'true'
-      - uses: actions/upload-pages-artifact@v3
-        if: steps.pages.outputs.enabled == 'true'
-        with:
-          path: site/dist
-  deploy:
-    needs: build
-    if: needs.build.outputs.pages_enabled == 'true'
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Upload to Cloudflare Pages
+        if: steps.gate.outputs.ok == 'true'
+        run: npx --yes wrangler@4 pages deploy site/dist --project-name="$PAGES_PROJECT" --branch=main --commit-dirty=true

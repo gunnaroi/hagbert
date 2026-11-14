@@ -13,7 +13,7 @@ site:
     The latest official data on Iceland's growth, prices, jobs, money, markets,
     public finances and external sector, in one place, updated as the numbers
     come out.
-  url: "https://gunnaroi.github.io/hagbert"   # GitHub Pages project URL; change if a custom domain is connected
+  url: "https://hagbert.pages.dev"   # Cloudflare Pages URL (works while the repo is private); change if a custom domain is connected
   language: "is"
   language_secondary: "en"
   timezone: "Atlantic/Reykjavik"               # UTC year-round
