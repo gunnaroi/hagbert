@@ -1,0 +1,33 @@
+# Copy to registry/series/<id>.yaml and fill EVERY field. Schema: _schema.md
+id: example_series
+title: "Icelandic title (English title)"
+short_title: "Short"
+area: inflation               # growth|inflation|jobs|activity|money|markets|fiscal|external|housing|population
+source:
+  agency: "Hagstofa Íslands (Statistics Iceland)"
+  dataset: "Table title"
+  url: ""                     # landing page of the release
+  module: "pipelines/sources/hagstofa.py"
+licence: "CC-BY-4.0"          # CC-BY-4.0 | CC0 | show-only | unverified | other:<text>
+downloadable: true            # false for show-only / unverified
+fetch: auto                   # auto (nightly Actions) | manual
+frequency: M                  # D | W | F | M | Q | A
+unit: "index"
+base_year: "1988=100"
+seasonal_adjustment: none     # none | agency | ours
+transforms: [level, yoy]
+release:
+  calendar: hagstofa          # registry/calendar/<name>.yaml, or none
+  rule: "Mid-month, for the previous month"
+  lag_days: 45                # status page flags overdue after period_end + lag_days
+validation:
+  range: [50, 5000]
+  revision_alert: 1
+pages:
+  - {page: home, section: key-indicators}
+original: false
+step: false
+discontinued: null
+owner: ""
+verified_against: []          # [{url, checked_on, by}]
+notes: ""

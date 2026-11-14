@@ -1,0 +1,20 @@
+[project]
+name = "hagbert"
+version = "0.1.0"
+description = "A free, nightly-updated read on the Icelandic economy from official data. Inspired by econvitals.org."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+dependencies = [
+    "pandas>=2.2",
+    "requests>=2.31",
+    "pyyaml>=6.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

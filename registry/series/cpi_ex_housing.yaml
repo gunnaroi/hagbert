@@ -1,0 +1,39 @@
+id: cpi_ex_housing
+title: "Vísitala neysluverðs án húsnæðiskostnaðar (CPI less housing cost)"
+short_title: "VNV án húsnæðis"
+area: inflation
+source:
+  agency: "Hagstofa Íslands (Statistics Iceland)"
+  dataset: "Consumer price index and changes, base 1988=100 (VIS01000)"
+  url: "https://px.hagstofa.is/pxen/pxweb/en/Efnahagur/visitolur/1_vnv/1_vnv/VIS01000.px"
+  module: "pipelines/sources/hagstofa.py"
+  lang: "en"
+  table: "Efnahagur/visitolur/1_vnv/1_vnv/VIS01000.px"
+  time_dim: "Month"
+  item_dim: "Index"
+  item_code: "CPILH"
+  selection:
+    Item: ["index"]
+licence: "CC-BY-4.0"
+downloadable: true
+fetch: auto
+frequency: M
+unit: "index (1988=100)"
+base_year: "1988=100"
+seasonal_adjustment: none
+transforms: [level, mom, yoy]
+release:
+  calendar: hagstofa
+  rule: "Mid-month, for the previous month"
+  lag_days: 45
+validation:
+  range: [100, 5000]
+  revision_alert: 1
+pages:
+  - {page: inflation, section: core-measures}
+original: false
+step: false
+discontinued: null
+owner: "gunnaroi"
+verified_against: []
+notes: "Iceland's own core measure: CPI less housing cost, published by Hagstofa alongside the headline index."

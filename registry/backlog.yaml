@@ -1,0 +1,20 @@
+# Indicators planned but not yet built, by phase. See docs/guidebook/00-start-here.md.
+phases:
+  0-foundations:
+    done:
+      - repo layout (registry/pipelines/data/site/workflows), seed series, CI, nightly harvest, Pages deploy
+  1-data-spine:
+    - pin exact Hagstofa PxWeb leaf tables + dimension codes: CPI subindices (Efnahagur/visitolur/1_vnv/2_undirvisitolur), HICP (2_samraemdvnv), national accounts (Efnahagur/thjodhagsreikningar), external trade (utanrikisverslun), labour force survey + registered unemployment + wage index (Atvinnuvegir), retail turnover, building permits/starts, real-estate price index (Ibuar/… or Þjóðskrá)
+    - pin Seðlabanki NSDP SDMX keys: key policy rate, official ISK reference exchange rate, government bond yields, inflation-expectations survey; fallbacks: databank.is and the XML feed under cb.is/statistics/xml-data
+    - OECD Data (SDMX, ISL) and Eurostat (JSON-stat, IS) comparators for the peers page
+    - Hagstofa + Seðlabanki release calendar exact dates -> registry/calendar/*.yaml
+    - OMX Iceland main index (OMXI) public feed (Nasdaq Iceland) — verify availability
+  2-topic-pages:
+    - home key-indicators grid; inflation (COICOP groups, core, dispersion); growth; jobs; activity; money & markets; fiscal & external; calendar page; series pages with downloads where licensed
+  3-briefings:
+    - forecast/surprise reference: no consensus calendar exists for Iceland — use Seðlabanki Peningamál forecasts vs. outturns, OECD Economic Outlook, IMF WEO
+    - AI-drafted briefings -> PR -> human merge (AGENTS.md rule 7)
+  4-originals-and-tools:
+    - port house measures from econvitals/replication (CC0): ecumenical underlying inflation, inflation dispersion/skewness, labor-market tightness, activity/inflation composites for the home 2×2 — see measures/README.md
+  5-go-public:
+    - custom domain or Pages URL announced; About page finalized; feedback channel live

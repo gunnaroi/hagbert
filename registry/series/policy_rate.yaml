@@ -1,0 +1,36 @@
+id: policy_rate
+title: "Meginvextir Seðlabanka Íslands, 7 daga innlán (key policy rate)"
+short_title: "Stýrivextir"
+area: money
+source:
+  agency: "Seðlabanki Íslands (Central Bank of Iceland)"
+  dataset: "Key policy rate via the NSDP SDMX feed"
+  url: "https://data.sedlabanki.is/"
+  module: "pipelines/sources/sedlabanki.py"
+  dataflow: "NSDP"
+  key:
+    search: "key policy rate"   # resolved to an exact SDMX key on first fetch; the resolved key is stored in data/meta/policy_rate.json
+licence: "CC-BY-4.0"
+downloadable: true
+fetch: auto
+frequency: D
+unit: "percent"
+base_year: null
+seasonal_adjustment: none
+transforms: [level]
+release:
+  calendar: sedlabanki
+  rule: "Set at each Monetary Policy Committee meeting; effective the next day"
+  lag_days: 2
+validation:
+  range: [-5, 25]
+  revision_alert: 5
+pages:
+  - {page: home, section: key-indicators}
+  - {page: money, section: policy-rate}
+original: false
+step: true
+discontinued: null
+owner: "gunnaroi"
+verified_against: []
+notes: "The policy rate is the overnight/7-day deposit rate that anchors the whole rate structure. Exact SDMX key to be pinned during the first harvest (registry/backlog.yaml)."

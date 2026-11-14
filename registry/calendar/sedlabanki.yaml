@@ -1,0 +1,13 @@
+# Release calendar: Seðlabanki Íslands (Central Bank of Iceland).
+# Pin exact dates/URLs during the data-spine phase: cb.is monetary policy
+# calendar and Peningamál (Monetary Bulletin) — see registry/backlog.yaml.
+name: sedlabanki
+releases:
+  - id: mpc_decision
+    title: "Monetary Policy Committee decision and policy rate"
+    rule: "Six scheduled meetings per year; decision published the morning of the meeting"
+    url: "https://www.cb.is/monetary-policy/"
+  - id: monetary_bulletin
+    title: "Peningamál (Monetary Bulletin): forecast and macroeconomic analysis"
+    rule: "Quarterly"
+    url: "https://www.cb.is/monetary-policy/monetary-bulletin/"

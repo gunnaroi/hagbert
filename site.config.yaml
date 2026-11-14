@@ -1,0 +1,55 @@
+# ---------------------------------------------------------------------------
+# SINGLE SOURCE OF TRUTH for the site's identity.
+# The site name must appear ONLY in this file. Code, templates and docs read it
+# from here (or say "the site"). `make check` (scripts/check_name.py) fails if
+# the name is hard-coded anywhere else.
+# ---------------------------------------------------------------------------
+site:
+  name: "Hagbert"
+  short_name: "Hagbert"
+  tagline: "Hagvísir íslenskrar efnahagsstarfsemi"
+  tagline_en: "A running read on the health of the Icelandic economy"
+  description: >-
+    The latest official data on Iceland's growth, prices, jobs, money, markets,
+    public finances and external sector, in one place, updated as the numbers
+    come out.
+  url: "https://gunnaroi.github.io/hagbert"   # GitHub Pages project URL; change if a custom domain is connected
+  language: "is"
+  language_secondary: "en"
+  timezone: "Atlantic/Reykjavik"               # UTC year-round
+  country: "IS"
+  currency: "ISK"
+
+credit:
+  inspired_by_name: "Econvitals"
+  inspired_by_url: "https://econvitals.org"
+  inspired_by_text: >-
+    Inspired by Econvitals, Jason Furman's dashboard of the U.S. economy.
+    This is an independent project, not affiliated with Econvitals. Methods
+    ported from github.com/econvitals/replication are CC0 and credited in measures/.
+
+brand:
+  colors:
+    primary: "#003A70"    # deep blue
+    accent: "#E8892B"     # amber accent
+    ink: "#1A1A1A"
+    paper: "#FFFFFF"      # light theme
+  logo_mark: "assets/brand/mark.svg"
+  fonts:
+    serif: "Literata"
+    sans: "Inter"
+
+conventions:
+  fiscal_year_start_month: 1          # January; the fiscal year is the calendar year
+  quarter_label: "Q{q} {yyyy}"
+  money_unit_domestic: "isk_bn"       # ISK billions for fiscal aggregates
+  money_unit_external: "eur_mn"       # EUR millions for the external sector
+  inflation_target: 2.5               # Seðlabanki Íslands CPI target, % year-on-year
+
+contact:
+  feedback_email: "gunnaroi@users.noreply.github.com"
+  social: {}
+
+switches:
+  briefings: false    # phase 3: AI-drafted briefings need a human merge to publish
+  newsletter: false   # phase 3

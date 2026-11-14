@@ -1,0 +1,34 @@
+name: New indicator
+title: "indicator: <series id>"
+labels: [indicator]
+description: "Propose one new series for the registry"
+body:
+  - type: input
+    attributes:
+      label: Series id
+      description: lower_snake; will become registry/series/<id>.yaml
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Agency / provider
+      description: e.g. Hagstofa Íslands, Seðlabanki Íslands, OECD, Eurostat
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Exact source
+      description: Table/feed URL and, for PxWeb, the full table path and dimension codes
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Licence
+      description: CC-BY-4.0 / CC0 / show-only / unverified
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Why it belongs on the site
+    validations:
+      required: true

@@ -1,0 +1,17 @@
+# Release calendar: Hagstofa Íslands (Statistics Iceland).
+# Pin exact dates/URLs from the official release schedule during the data-spine
+# phase: https://hagstofa.is/utgafa/ (útgáfuáætlun) — see registry/backlog.yaml.
+name: hagstofa
+releases:
+  - id: cpi
+    title: "Consumer price index (vísitala neysluverðs)"
+    rule: "Mid-month (around the 10th), for the previous month"
+    url: "https://hagstofa.is/statistics/economy/prices-and-consumption/consumer-price-index/"
+  - id: national_accounts
+    title: "National accounts (þjóðhagsreikningar), quarterly"
+    rule: "About two months after quarter end"
+    url: "https://hagstofa.is/statistics/economy/national-accounts/"
+  - id: labour_force_survey
+    title: "Labour force survey (vinnumarkaðsrannsókn)"
+    rule: "Monthly"
+    url: "https://hagstofa.is/statistics/labour-market/"

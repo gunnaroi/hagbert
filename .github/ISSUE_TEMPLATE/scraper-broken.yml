@@ -1,0 +1,20 @@
+name: Source broken / series stale
+title: "scraper-broken: <series id>"
+labels: [scraper-broken]
+description: "A fetch failed; the series is marked stale in data/status.json. Good data is untouched."
+body:
+  - type: input
+    attributes:
+      label: Series id
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Error from the last harvest run
+      description: Copy from the harvest workflow log
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: What changed upstream
+      description: Table moved, feed retired, rate limit hit, ...

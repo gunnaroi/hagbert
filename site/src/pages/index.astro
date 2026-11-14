@@ -1,0 +1,23 @@
+---
+import Layout from "../layouts/Layout.astro";
+import siteJson from "../../public/data/site.json";
+import indexJson from "../../public/data/index.json";
+
+const site = siteJson.site;
+const credit = siteJson.credit;
+const base = import.meta.env.BASE_URL;
+const tagline = site.language === "is" ? site.tagline : site.tagline_en;
+---
+<Layout title={site.name} siteName={site.name} tagline={tagline}>
+  <p>{site.description}</p>
+  <p class="muted">{credit.inspired_by_text}</p>
+  <div class="cards">
+    {indexJson.series.map((x) => (
+      <a class="card" href={`${base}series/${x.id}/`}>
+        <div>{x.title}</div>
+        <div class="v">{x.last_value !== undefined ? x.last_value : "—"}</div>
+        <div class="muted">{x.unit} · {x.last_period ?? "no data yet"} · {x.status}</div>
+      </a>
+    ))}
+  </div>
+</Layout>

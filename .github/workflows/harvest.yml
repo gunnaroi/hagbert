@@ -1,0 +1,42 @@
+name: harvest
+# Nightly fetch of every fetch:auto series, just after the Icelandic morning
+# releases (Iceland is UTC year-round). Commits only when data changed; a failed
+# fetch marks the series stale in data/status.json and never overwrites good data.
+on:
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - run: uv sync
+      - name: Fetch, validate, publish
+        id: run
+        run: uv run python -m pipelines.run --fetch auto
+      - name: Commit data changes (fetch + ff-only retry)
+        run: |
+          git config user.name "hagbert-bot"
+          git config user.email "hagbert-bot@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then
+            echo "no data changes"
+          else
+            git commit -q -m "data: nightly harvest $(date -u +%F)"
+            git fetch -q origin main
+            if git merge-base --is-ancestor origin/main HEAD; then
+              git push -q origin HEAD:main
+            else
+              git rebase -q origin/main && git push -q origin HEAD:main
+            fi
+            echo "pushed"
+          fi
